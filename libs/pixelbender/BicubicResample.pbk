@@ -1,0 +1,230 @@
+<languageVersion : 1.0;>
+
+kernel BilinearResample
+<   namespace : "com.mutado.pixelbender";
+    vendor : "Lorenzo Manfredi";
+    version : 1;
+    description : "Resizes an image using bicubic resampling.";
+>
+{
+    parameter float scale
+    <
+        minValue: 0.0;
+        maxValue: 10.0;
+        defaultValue: 0.25;
+    >;
+    
+    input image4 src;
+    output pixel4 dst;
+
+    void
+    evaluatePixel()
+    {   
+
+        float2 origin = outCoord();
+        float2 coor = origin / scale;
+        
+        // Bicubic algorithm
+        
+        float RGBVAL = 1.0;
+        
+        pixel4 result;
+        float i = coor.x;
+        float j = coor.y;
+       
+        float rsum = 0.0;
+        float gsum = 0.0;
+        float bsum = 0.0;
+        
+        /*float4 Rmdx = float4( 0.06, 0.66, 0.0, 0.26 );
+        float4 Rdyn = float4( 0.06, 0.66, 0.0, 0.26 );*/
+        float4 Rmdx = float4( 0.1666666666, 0.6666666666, 0.1666666666, 0.0 );
+        float4 Rdyn = float4( 0.1666666666, 0.6666666666, 0.1666666666, 0.0 );
+        
+        float n = 0.0;
+        float m = 0.0;
+        pixel4 p = pixel4( 0.0, 0.0, 0.0, 0.0 );
+        float Rres = 0.0;
+        
+        // block 1
+        
+        m = -1.0;
+        n = -1.0;
+        p = sample( src, float2( float( i + m ), float( j + n ) ) );
+        Rres = Rmdx[ 0 ] * Rdyn[ 0 ];
+        rsum += float( p.r * Rres );
+        gsum += float( p.g * Rres );
+        bsum += float( p.b * Rres );
+        
+        n = 0.0;
+        p = sample( src, float2( float( i + m ), float( j + n ) ) );
+        Rres = Rmdx[ 0 ] * Rdyn[ 1 ];
+        rsum += float( p.r * Rres );
+        gsum += float( p.g * Rres );
+        bsum += float( p.b * Rres );
+        
+        n = 1.0;
+        p = sample( src, float2( float( i + m ), float( j + n ) ) );
+        Rres = Rmdx[ 0 ] * Rdyn[ 2 ];
+        rsum += float( p.r * Rres );
+        gsum += float( p.g * Rres );
+        bsum += float( p.b * Rres );
+        
+        n = 2.0;
+        p = sample( src, float2( float( i + m ), float( j + n ) ) );
+        Rres = Rmdx[ 0 ] * Rdyn[ 3 ];
+        rsum += float( p.r * Rres );
+        gsum += float( p.g * Rres );
+        bsum += float( p.b * Rres );
+        
+        // block 2
+        
+        m = 0.0;
+        n = -1.0;
+        p = sample( src, float2( float( i + m ), float( j + n ) ) );
+        Rres = Rmdx[ 1 ] * Rdyn[ 0 ];
+        rsum += float( p.r * Rres );
+        gsum += float( p.g * Rres );
+        bsum += float( p.b * Rres );
+        
+        n = 0.0;
+        p = sample( src, float2( float( i + m ), float( j + n ) ) );
+        Rres = Rmdx[ 1 ] * Rdyn[ 1 ];
+        rsum += float( p.r * Rres );
+        gsum += float( p.g * Rres );
+        bsum += float( p.b * Rres );
+        
+        n = 1.0;
+        p = sample( src, float2( float( i + m ), float( j + n ) ) );
+        Rres = Rmdx[ 1 ] * Rdyn[ 2 ];
+        rsum += float( p.r * Rres );
+        gsum += float( p.g * Rres );
+        bsum += float( p.b * Rres );
+        
+        n = 2.0;
+        p = sample( src, float2( float( i + m ), float( j + n ) ) );
+        Rres = Rmdx[ 1 ] * Rdyn[ 3 ];
+        rsum += float( p.r * Rres );
+        gsum += float( p.g * Rres );
+        bsum += float( p.b * Rres );
+        
+        // block 2
+        
+        m = 1.0;
+        n = -1.0;
+        p = sample( src, float2( float( i + m ), float( j + n ) ) );
+        Rres = Rmdx[ 2 ] * Rdyn[ 0 ];
+        rsum += float( p.r * Rres );
+        gsum += float( p.g * Rres );
+        bsum += float( p.b * Rres );
+        
+        n = 0.0;
+        p = sample( src, float2( float( i + m ), float( j + n ) ) );
+        Rres = Rmdx[ 2 ] * Rdyn[ 1 ];
+        rsum += float( p.r * Rres );
+        gsum += float( p.g * Rres );
+        bsum += float( p.b * Rres );
+        
+        n = 1.0;
+        p = sample( src, float2( float( i + m ), float( j + n ) ) );
+        Rres = Rmdx[ 2 ] * Rdyn[ 2 ];
+        rsum += float( p.r * Rres );
+        gsum += float( p.g * Rres );
+        bsum += float( p.b * Rres );
+        
+        n = 2.0;
+        p = sample( src, float2( float( i + m ), float( j + n ) ) );
+        Rres = Rmdx[ 2 ] * Rdyn[ 3 ];
+        rsum += float( p.r * Rres );
+        gsum += float( p.g * Rres );
+        bsum += float( p.b * Rres );
+        
+        // block 3
+        
+        m = 2.0;
+        n = -1.0;
+        p = sample( src, float2( float( i + m ), float( j + n ) ) );
+        Rres = Rmdx[ 3 ] * Rdyn[ 0 ];
+        rsum += float( p.r * Rres );
+        gsum += float( p.g * Rres );
+        bsum += float( p.b * Rres );
+        
+        n = 0.0;
+        p = sample( src, float2( float( i + m ), float( j + n ) ) );
+        Rres = Rmdx[ 3 ] * Rdyn[ 1 ];
+        rsum += float( p.r * Rres );
+        gsum += float( p.g * Rres );
+        bsum += float( p.b * Rres );
+        
+        n = 1.0;
+        p = sample( src, float2( float( i + m ), float( j + n ) ) );
+        Rres = Rmdx[ 3 ] * Rdyn[ 2 ];
+        rsum += float( p.r * Rres );
+        gsum += float( p.g * Rres );
+        bsum += float( p.b * Rres );
+        
+        n = 2.0;
+        p = sample( src, float2( float( i + m ), float( j + n ) ) );
+        Rres = Rmdx[ 3 ] * Rdyn[ 3 ];
+        rsum += float( p.r * Rres );
+        gsum += float( p.g * Rres );
+        bsum += float( p.b * Rres );
+        
+        // check rgb values
+        
+        float red = float( rsum );
+        if ( red < 0.0 ) {
+            red = 0.0;
+        } else {
+            if( red > RGBVAL ) {
+                red = RGBVAL;
+            }
+        }
+        
+        float green = float( gsum );
+        if ( green < 0.0 ) {
+            green = 0.0;
+        } else {
+            if( green > RGBVAL ) {
+                green = RGBVAL;
+            }
+        }
+        
+        float blue = float( bsum );
+        if ( blue < 0.0 ) {
+            blue = 0.0;
+        } else {
+            if( blue > RGBVAL ) {
+                blue = RGBVAL;
+            }
+        }
+        
+        float r = float( red );
+        float g = float( green );
+        float b = float( blue );
+        
+        p = sample( src, coor );
+        dst.r = r;
+        dst.g = g;
+        dst.b = b;
+        dst.a = p.a;
+        
+        // sharpen
+        
+        /*float amount = 0.2;
+        float radius = 2.0;
+        float2 hOffset = float2( radius, 0.0 );
+        float2 vOffset = float2( 0.0, radius );
+        float4 left = sampleLinear( src, coor - hOffset ) * amount;
+        float4 right = sampleLinear( src, coor + hOffset ) * amount;
+        float4 top = sampleLinear( src, coor - vOffset ) * amount;
+        float4 bottom = sampleLinear( src, coor + vOffset ) * amount;
+        
+        dst.rgb += ( top.rgb );
+        dst.rgb -= ( bottom.rgb );
+        dst.rgb += left.rgb;
+        dst.rgb -= right.rgb;*/
+
+    }
+    
+}

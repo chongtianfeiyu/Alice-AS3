@@ -1,0 +1,25 @@
+<languageVersion : 1.0;>
+
+kernel BilinearResample
+<   namespace : "com.mutado.pixelbender";
+    vendor : "Lorenzo Manfredi";
+    version : 1;
+    description : "Resizes an image using bilinear resampling.";
+>
+{
+    parameter float scale
+    <
+        minValue: 0.0;
+        maxValue: 1000.0;
+        defaultValue: 1.0;
+    >;
+    
+    input image4 src;
+    output pixel4 dst;
+
+    void
+    evaluatePixel()
+    {
+        dst = sampleLinear( src, outCoord() * scale ); // bilinear scaling
+    }
+}

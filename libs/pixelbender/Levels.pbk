@@ -1,0 +1,56 @@
+<languageVersion : 1.0;>
+
+kernel Levels
+<   namespace : "com.mutado.pixelbender";
+    vendor : "Lorenzo Manfredi";
+    version : 1;
+    description : "Simple Levels correction";
+>
+{
+    parameter float2 RGB
+    <
+        minValue: float2( 0.0, 0.0 );
+        maxValue: float2( 1.0, 1.0 );
+        defaultValue: float2( 0.0, 1.0 );
+    >;
+    
+    parameter float2 R
+    <
+        minValue: float2( 0.0, 0.0 );
+        maxValue: float2( 1.0, 1.0 );
+        defaultValue: float2( 0.0, 1.0 );
+    >;
+    
+    parameter float2 G
+    <
+        minValue: float2( 0.0, 0.0 );
+        maxValue: float2( 1.0, 1.0 );
+        defaultValue: float2( 0.0, 1.0 );
+    >;
+    
+    parameter float2 B
+    <
+        minValue: float2( 0.0, 0.0 );
+        maxValue: float2( 1.0, 1.0 );
+        defaultValue: float2( 0.0, 1.0 );
+    >;
+    
+    input image4 src;
+    output pixel4 dst;
+
+    void
+    evaluatePixel()
+    {
+        
+        pixel4 p = sampleNearest( src, outCoord() );
+        
+        float rgbdiff = RGB[1] - RGB[0];
+        
+        p.r = ( ( p.r - R [ 0 ] ) / ( R[ 1 ] - R[ 0 ] ) - RGB[ 0 ] ) / rgbdiff;
+        p.g = ( ( p.g - G [ 0 ] ) / ( G[ 1 ] - G[ 0 ] ) - RGB[ 0 ] ) / rgbdiff;
+        p.b = ( ( p.b - B [ 0 ] ) / ( B[ 1 ] - B[ 0 ] ) - RGB[ 0 ] ) / rgbdiff;
+        
+        dst = p;
+        
+    }
+}
