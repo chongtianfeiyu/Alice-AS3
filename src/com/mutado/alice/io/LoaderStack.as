@@ -43,6 +43,7 @@ package com.mutado.alice.io
 		
 		private function _next() : void
 		{
+			sendNotification( LoaderStatus.NEXT, this, _currentLoader );
 			_currentLoader = ILoader( _queue.pull() );
 			if ( _currentLoader != null ) {
 				_registerListeners();

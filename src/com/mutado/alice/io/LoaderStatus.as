@@ -9,6 +9,7 @@ package com.mutado.alice.io
 		// TYPES
 		// ==================================================================================
 		
+		public static const NEXT 		: LoaderStatus			= new LoaderStatus( "next" );
 		public static const START 		: LoaderStatus			= new LoaderStatus( "start" );
 		public static const PROGRESS 	: LoaderStatus			= new LoaderStatus( "progress" );
 		public static const COMPLETE 	: LoaderStatus			= new LoaderStatus( "complete" );
