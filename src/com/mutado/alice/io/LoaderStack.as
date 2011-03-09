@@ -4,6 +4,7 @@ package com.mutado.alice.io
 	import com.mutado.alice.interfaces.ILoader;
 	import com.mutado.alice.interfaces.ILoaderStack;
 	import com.mutado.alice.interfaces.INotification;
+	import com.mutado.alice.log.Logger;
 	import com.mutado.alice.util.Notificator;
 	import com.mutado.alice.util.Queue;
 	
@@ -43,7 +44,6 @@ package com.mutado.alice.io
 		
 		private function _next() : void
 		{
-			sendNotification( LoaderStatus.NEXT, this, _currentLoader );
 			_currentLoader = ILoader( _queue.pull() );
 			if ( _currentLoader != null ) {
 				_registerListeners();
@@ -74,6 +74,7 @@ package com.mutado.alice.io
 		{
 			_completed++;
 			if ( _queue.size() > 0 ) {
+				sendNotification( LoaderStatus.NEXT, this, _currentLoader );
 				_next();
 				return;	
 			}

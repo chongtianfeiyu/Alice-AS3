@@ -11,6 +11,7 @@ package com.mutado.alice.util
 	import com.mutado.alice.io.TextLoader;
 	import com.mutado.alice.io.VarsLoader;
 	import com.mutado.alice.io.XMLLoader;
+	import com.mutado.alice.log.Logger;
 	
 	import flash.system.LoaderContext;
 	
@@ -25,6 +26,7 @@ package com.mutado.alice.util
 		public static const PROGRESS 	: LoaderStatus				= LoaderStatus.PROGRESS;
 		public static const COMPLETE 	: LoaderStatus				= LoaderStatus.COMPLETE;
 		public static const ERROR 		: LoaderStatus				= LoaderStatus.ERROR;
+		public static const NEXT 		: LoaderStatus				= LoaderStatus.NEXT;
 		
 		// ==================================================================================
 		// VARIABLES
@@ -60,6 +62,7 @@ package com.mutado.alice.util
 			_stack.registerListener( PROGRESS, notifyListeners );
 			_stack.registerListener( COMPLETE, _onComplete );
 			_stack.registerListener( ERROR, notifyListeners );
+			_stack.registerListener( NEXT, notifyListeners );
 		}
 		
 		// ==================================================================================
@@ -68,7 +71,6 @@ package com.mutado.alice.util
 		
 		private function _onComplete( note : INotification ) : void
 		{
-			_stack.releaseListeners();
 			notifyListeners( note );
 		}
 		

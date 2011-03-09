@@ -7,6 +7,7 @@ package com.mutado.alice.util
 	import com.mutado.alice.interfaces.INotificator;
 	import com.mutado.alice.interfaces.IObservable;
 	import com.mutado.alice.interfaces.IObserver;
+	import com.mutado.alice.log.Logger;
 	
 	import flash.utils.Dictionary;
 
