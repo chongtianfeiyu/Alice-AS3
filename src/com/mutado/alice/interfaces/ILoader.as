@@ -20,6 +20,6 @@ package com.mutado.alice.interfaces
 		function get loaded() : uint;
 		function get total() : uint;
 		function get progress() : Number;	
-		function get complete() : Boolean;	
+		function get complete() : Boolean;
 	}
 }

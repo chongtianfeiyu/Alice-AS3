@@ -66,19 +66,32 @@ package com.mutado.alice.display
 			view.scaleX = view.scaleY = s;
 		}
 		
-		public function resolveUI( pointer : String ) : *
+		public function resolveUI( pointer : String ) : DisplayObject
 		{
+			var doc : DisplayObject;
 			try {
-				var doc : DisplayObjectContainer = DisplayObjectContainer( view );
+				var docContainer : DisplayObjectContainer = DisplayObjectContainer( view );
+				var docTemp: DisplayObject = DisplayObjectContainer( view );
 				var keys : Array = pointer.split( "." );
 				for each ( var value : String in keys ) {
-					doc = DisplayObjectContainer( doc.getChildByName( value ) ); 
-				}	
+					docTemp = DisplayObject( docContainer.getChildByName( value ) );
+					if ( docTemp is DisplayObjectContainer ) { 
+						docContainer = DisplayObjectContainer( docTemp );
+					}
+				}
+				doc = docTemp;
 			} catch ( e : Error ) { }
 			if ( doc == null ) {
 				throw new NullPointerException( "Cannot resolve UI '" + pointer + "'" );
 			}
 			return doc;			
+		}
+		
+		public function removeFromSuperview() : void
+		{
+			if ( view.parent != null ) {
+				view.parent.removeChild( view );
+			}
 		}
 		
 		public function get position() : Point

@@ -14,7 +14,7 @@ package com.mutado.alice.interfaces
 		function resize( width : Number = NaN, height : Number = NaN ) : void;
 		function rotate( deg : Number ) : void;
 		function scale( s : Number ) : void;
-		function resolveUI( pointer : String ) : *;
+		function resolveUI( pointer : String ) : DisplayObject;
 		function get position() : Point;
 		function get size() : Size;
 		function get rect() : Rectangle;

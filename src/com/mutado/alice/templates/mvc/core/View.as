@@ -5,6 +5,7 @@ package com.mutado.alice.templates.mvc.core
 	import com.mutado.alice.error.IllegalAccessException;
 	import com.mutado.alice.error.NullPointerException;
 	import com.mutado.alice.interfaces.IAdapter;
+	import com.mutado.alice.log.Logger;
 	import com.mutado.alice.templates.mvc.interfaces.IView;
 	import com.mutado.alice.templates.mvc.interfaces.IViewAdapter;
 	
@@ -63,7 +64,8 @@ package com.mutado.alice.templates.mvc.core
 			try {
 				var adapter : IViewAdapter = IViewAdapter( _adapterDictionary[ type ] );
 				delete _adapterDictionary[ type ];
-				adapter.dismiss();	
+				adapter.dismiss();
+				adapter.release();
 			} catch ( e : Error ) {
 				throw new NullPointerException( "Adapter type[" + type + "] is not registered!" );
 			}

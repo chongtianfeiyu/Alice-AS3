@@ -6,6 +6,8 @@ package com.mutado.alice.io.strategy
 	import com.mutado.alice.log.Logger;
 	
 	import flash.display.Loader;
+	import flash.display.LoaderInfo;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
@@ -13,7 +15,6 @@ package com.mutado.alice.io.strategy
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
-	import flash.display.Sprite;
 
 	public class LoaderStrategy extends AbstractLoadStrategy
 	{
@@ -47,6 +48,7 @@ package com.mutado.alice.io.strategy
 		private function _onComplete( e : Event ) : void
 		{
 			Logger.LOG( "Loader Complete " + owner + " URL: " + owner.request.url );
+			loaderInfo = e.currentTarget.loader.contentLoaderInfo;
 			owner.data = e.currentTarget.loader.content;
 			owner.sendNotification( LoaderStatus.COMPLETE );
 		}
@@ -77,7 +79,15 @@ package com.mutado.alice.io.strategy
 			ol.contentLoaderInfo.addEventListener( SecurityErrorEvent.SECURITY_ERROR, _onSecurityError );
 			ol.contentLoaderInfo.addEventListener( IOErrorEvent.IO_ERROR, _onError );
 			ol.load( request, context );
+			loader = ol;
 		}
+		
+		// ==================================================================================
+		// PROPERTIES
+		// ==================================================================================
+		
+		public var loader : Loader;
+		public var loaderInfo : LoaderInfo; 
 		
 	}
 }

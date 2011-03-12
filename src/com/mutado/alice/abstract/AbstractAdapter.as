@@ -2,6 +2,7 @@ package com.mutado.alice.abstract
 {
 	import com.mutado.alice.core.types.ObjectType;
 	import com.mutado.alice.interfaces.IAdapter;
+	import com.mutado.alice.log.Logger;
 
 	public class AbstractAdapter extends Abstract implements IAdapter
 	{

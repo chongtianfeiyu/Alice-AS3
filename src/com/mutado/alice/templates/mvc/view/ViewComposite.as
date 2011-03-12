@@ -58,27 +58,32 @@ package com.mutado.alice.templates.mvc.view
 				application.registerAdapter( reference );	
 			}
 			registerCollegue( reference );
-			view.addChild( reference.view );	
+			if ( reference.view.parent == null && !view.contains( reference.view ) ) {
+				view.addChild( reference.view );	
+			}
 		}
 		
 		public function removeAdapter( reference : IViewAdapter ) : void
 		{
-			if ( application.hasAdapter( reference.type ) ) {
-				application.removeAdapter( reference.type );	
-			}
 			removeCollegue( reference );
 			if ( view.contains( reference.view ) ) {
 				try {
 					view.removeChild( reference.view );
 				} catch ( e : Error ) {
-					try {
-						reference.view.parent.removeChild( reference.view );	
-					} catch ( e : Error ) {
-						Logger.WARN( "Impossibile to removeChild( " + reference.view + " ) from View: " + view );	
-					}
+					Logger.WARN( "Impossibile to removeChild( " + reference.view + " ) from View: " + view );
 				}					
+			} else {
+				try {
+					reference.view.parent.removeChild( reference.view );	
+				} catch ( e : Error ) {
+					Logger.WARN( "Impossibile to removeChild( " + reference.view + " ) from View: " + reference.view.parent );	
+				}
 			}
-			reference.release();
+			if ( application.hasAdapter( reference.type ) ) {
+				application.removeAdapter( reference.type );	
+			} else {
+				reference.release();
+			}
 		}
 		
 		public function removeAdapters() : void
@@ -135,6 +140,8 @@ package com.mutado.alice.templates.mvc.view
 		override public function release() : void
 		{
 			application.releaseListenersFor( this );
+			removeAdapters();
+			helper.removeFromSuperview();
 			super.release();
 		}
 		
@@ -171,6 +178,9 @@ package com.mutado.alice.templates.mvc.view
 		{
 			_enabled = value;
 			value ? validate() : invalidate();
+			for ( var i : uint = 0; i < count; i++ ) {
+				getAdapterAt( i ).enabled = value;
+			}
 		}
 		
 	}

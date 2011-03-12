@@ -61,6 +61,7 @@ package com.mutado.alice.templates.mvc.core
 				var proxy : IModelProxy = IModelProxy( _proxyDictionary[ type ] );
 				delete _proxyDictionary[ type ];	
 				proxy.dismiss();
+				proxy.release();
 			} catch ( e : Error ) {
 				throw new NullPointerException( "Proxy type[ " + type + "] is not registered!" );
 			}

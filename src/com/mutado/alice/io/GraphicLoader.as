@@ -9,6 +9,7 @@ package com.mutado.alice.io
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.Loader;
 	import flash.display.Sprite;
 
 	public class GraphicLoader extends AbstractLoader
@@ -64,6 +65,15 @@ package com.mutado.alice.io
 				view.visible = false;
 			}
 		}
+
+		// ==================================================================================
+		// PUBLIC
+		// ==================================================================================
+		
+		public function getDefinition( name : String ) : Class 
+		{
+			return Class( LoaderStrategy( strategy ).loaderInfo.applicationDomain.getDefinition( name ) );	
+		}
 		
 		// ==================================================================================
 		// PROPERTIES
@@ -71,7 +81,11 @@ package com.mutado.alice.io
 		
 		public function get view() : DisplayObjectContainer
 		{
-			return DisplayObjectContainer( ( _bitmapContainer != null ? _bitmapContainer : data ) );	
+			var dob : DisplayObjectContainer = DisplayObjectContainer( ( _bitmapContainer != null ? _bitmapContainer : data ) );
+			if ( dob == null ) {
+				return DisplayObjectContainer( LoaderStrategy( strategy ).loader.content ); 
+			}
+			return dob;
 		}
 		
 		public function get helper() : DisplayObjectHelper

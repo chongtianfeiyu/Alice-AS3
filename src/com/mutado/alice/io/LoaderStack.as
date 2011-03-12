@@ -79,6 +79,7 @@ package com.mutado.alice.io
 				return;	
 			}
 			_unregisterListeners();
+			sendNotification( LoaderStatus.NEXT, this, _currentLoader );
 			sendNotification( LoaderStatus.COMPLETE, this );
 		}
 		

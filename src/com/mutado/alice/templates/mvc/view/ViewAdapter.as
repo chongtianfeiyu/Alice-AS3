@@ -88,6 +88,7 @@ package com.mutado.alice.templates.mvc.view
 		override public function release() : void
 		{
 			application.releaseListenersFor( this );
+			helper.removeFromSuperview();
 			super.release();
 		}
 		
