@@ -34,7 +34,7 @@ package com.mutado.alice.util
 		public function execute() : void
 		{
 			var timer : Timer = new Timer( delay, 1 );
-			timer.addEventListener( TimerEvent.TIMER_COMPLETE, doAction );
+			timer.addEventListener( TimerEvent.TIMER, doAction );
 			timer.start();
 		}
 		

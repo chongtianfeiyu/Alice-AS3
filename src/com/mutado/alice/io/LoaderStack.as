@@ -133,9 +133,12 @@ package com.mutado.alice.io
 		
 		public function get estimateProgress() : Number
 		{
-			var p1 : Number = _completed / _size * 100;
-			var p2 : Number = 100 / _size * ( current.progress / 100 );
-			return Math.ceil( ( p1 + p2 ) * 100 ) / 100;
+			if ( _size > 1 ) {
+				var p1 : Number = _completed / _size * 100;
+				var p2 : Number = 100 / _size * ( current.progress / 100 );
+				return Math.ceil( ( p1 + p2 ) * 100 ) / 100;
+			}
+			return current.progress;
 		}
 		
 	}

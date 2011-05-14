@@ -83,7 +83,7 @@ package com.mutado.alice.io
 		{
 			var dob : DisplayObjectContainer = DisplayObjectContainer( ( _bitmapContainer != null ? _bitmapContainer : data ) );
 			if ( dob == null ) {
-				return DisplayObjectContainer( LoaderStrategy( strategy ).loader.content ); 
+				return LoaderStrategy( strategy ).loader.content as DisplayObjectContainer; 
 			}
 			return dob;
 		}
